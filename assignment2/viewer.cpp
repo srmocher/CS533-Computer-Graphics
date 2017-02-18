@@ -56,7 +56,7 @@ void init(void) {
 	//float *bounds = objects->bounds;
 	//mat4 proj = frustum(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
 	SceneParser parser;
-	scene = parser.parseSceneFile("sceneMillenniumFalcon.txt");
+	scene = parser.parseSceneFile("teapotScene.txt");
 	cout << "Center "<<scene.center.x<<","<<scene.center.y<<","<<scene.center.z<<endl;
 	cout << "Eye " << scene.eye.x << "," << scene.eye.y << "," << scene.eye.z << endl;
 	cout << "Num light sources :" << scene.numLightSources << endl;
@@ -74,13 +74,14 @@ void init(void) {
 	int numLightSources = scene.numLightSources;
 	
 	
-	for (int i = 0;i < numLightSources;i++)
+	for (int i = 1;i < numLightSources;i++)
 	{
 		lightProperties temp = scene.lightVals[i];
 		
 		vec4 tempVec(temp.position, 1.0);
 		vec4 t = viewingMatrix*tempVec;
-		scene.lightVals[i].position = vec3(t.x, t.y, t.z);
+		t = t / t.w;
+		//scene.lightVals[i].position = vec3(t.x, t.y, t.z);
 
 		
 	}
@@ -94,11 +95,23 @@ void init(void) {
 			objectInfos.push_back(objInfos[j]);
 		}
 		
-		cout << num;
+		
 	}
 
 }
 	
+void printMatrix(mat4 matrix)
+{
+	cout << "Matrix is " << endl;
+	for (int i = 0;i < 4;i++)
+	{
+		for (int j = 0;j < 4;j++)
+		{
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
 
 //----------------------------------------------------------------------------
 //
@@ -107,16 +120,21 @@ void init(void) {
 
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	float black[] = { 0.227, 0.474, 0.501,0.0 };
+	glClearBufferfv(GL_COLOR, 0, black);
+	glDepthMask(GL_TRUE);
 	glUseProgram(program);
-	
-	for (int i = 0;i < scene.numLightSources;i++)
+	mat4 tempMatrix = objInfos[0].modelMatrix;
+	mat4 projectionMatrix = glm::frustum(-1.0f, 1.f, -1.f, 1.0f, 1.5f, 3200.0f);
+	for (int i = 0;i < 2;i++)
 	{
 		lightProperties props = scene.lightVals[i];
 		char buff[100];
+		props.isEnabled = 1;
 		sprintf(buff, "Lights[%1d].isEnabled", i);
 		GLuint loc = glGetUniformLocation(program, buff);
 		glUniform1i(loc, props.isEnabled);
-
+		
 		sprintf(buff, "Lights[%1d].isLocal", i);
 		loc = glGetUniformLocation(program, buff);
 		glUniform1i(loc, props.isLocal);
@@ -133,6 +151,7 @@ void display(void) {
 		loc = glGetUniformLocation(program, buff);
 		glUniform3fv(loc, 1, glm::value_ptr(props.color));
 
+		//vec3 temp = vec3(t.x, t.y, t.z);
 		sprintf(buff, "Lights[%1d].position", i);
 		loc = glGetUniformLocation(program, buff);
 		glUniform3fv(loc, 1, glm::value_ptr(props.position));
@@ -159,23 +178,24 @@ void display(void) {
 
 		sprintf(buff, "Lights[%1d].linearAttenuation", i);
 		loc = glGetUniformLocation(program, buff);
-		glUniform1f(loc, props.linearAttenuation);
+		glUniform1f(loc, 0);
 
 		sprintf(buff, "Lights[%1d].quadraticAttenuation", i);
 		loc = glGetUniformLocation(program, buff);
-		glUniform1f(loc, props.quadraticAttenuation);
+		glUniform1f(loc, 0);
 	}
 	for (auto i = 0;i < objectInfos.size();i++)
 	{
 		objInfo info = objectInfos[i];
 		mat4 modelingMatrix = info.modelMatrix;
-		mat4 mvMatrix = modelingMatrix*viewingMatrix;
+		mat4 mvMatrix = viewingMatrix*modelingMatrix;
+		//printMatrix(mvMatrix);
 		GLuint loc1 = glGetUniformLocation(program, "MVMatrix");
 		mat3 normalMatrix = mat3(mvMatrix);
 		
 		glUniformMatrix4fv(loc1, 1, false, glm::value_ptr(mvMatrix));
 		loc1 = glGetUniformLocation(program, "NormalMatrix");
-		glUniformMatrix4fv(loc1, 1, false, glm::value_ptr(normalMatrix));
+		glUniformMatrix3fv(loc1, 1, false, glm::value_ptr(normalMatrix));
 		
 		loc1 = glGetUniformLocation(program, "ambient");
 		glUniform3fv(loc1, 1, glm::value_ptr(info.Ka));
@@ -191,16 +211,40 @@ void display(void) {
 
 		float *bounds = info.bounds;
 		vec4 left(bounds[0], bounds[2], bounds[4], 1.0f);
-		left = viewingMatrix*left;
+		left = viewingMatrix*info.modelMatrix*left;
 		left = left / left.w;
 		vec4 right(bounds[1], bounds[3], bounds[5], 1.0f);
-		right = viewingMatrix*right;
-		
+		right = viewingMatrix*info.modelMatrix*right;
+		right = right / right.w;
+		float l = left.x;
+		float b = left.y;
+		float n = -left.z;
 
+		float top = right.y;
+		float r = right.x;
+		float f = -right.z;
+		//mat4 projectionMatrix = glm::frustum(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f);
+		float zNear = (800 / 2.0f) / tan(45.0f*3.14159f / 360.0);
+		float zFar = 100000.0f;
+		
+		
+		//printMatrix(projectionMatrix);
+		mat4 mvpMatrix = projectionMatrix*viewingMatrix*info.modelMatrix;
+		
+		loc1 = glGetUniformLocation(program, "MVPMatrix");
+		glUniformMatrix4fv(loc1, 1, false, glm::value_ptr(mvpMatrix));
 		glBindVertexArray(info.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, info.VAOsize);
+
+		GLenum error = glGetError();
+		if (error != GL_NO_ERROR) {
+			std::cerr << error << std::endl;
+			break;
+		}
+
 	}
 }
+
 
 //----------------------------------------------------------------------------
 //

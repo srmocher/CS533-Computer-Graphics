@@ -7,6 +7,16 @@
 Scene::Scene()
 {
 	numLightSources = 0;
+	for (int i = 0;i < 4;i++) {
+		lightVals[i].isEnabled = 0;
+		lightVals[i].isSpot = 0;
+		lightVals[i].isLocal = 0;
+		lightVals[i].spotCosCutoff = 0;
+		lightVals[i].spotExponent = 0;
+		lightVals[i].constantAttenuation = 0;
+		lightVals[i].linearAttenuation = 0;
+		lightVals[i].quadraticAttenuation = 0;
+	}
 }
 std::vector<std::string> split(std::string const &input) {
 	std::istringstream buffer(input);
@@ -56,10 +66,10 @@ Scene SceneParser::parseSceneFile(string fileName)
 			scene.center = center;
 
 			vec3 viewUp;
-			center.x = stof(properties[i + 10]);
-			center.y = stof(properties[i + 11]);
-			center.z = stof(properties[i + 12]);
-			scene.viewUp = viewUp;
+			viewUp.x = stof(properties[i + 10]);
+			viewUp.y = stof(properties[i + 11]);
+			viewUp.z = stof(properties[i + 12]);
+			scene.viewUp = vec3(viewUp);
 		}
 		else if (prop.compare("light")==0)
 		{
@@ -67,11 +77,13 @@ Scene SceneParser::parseSceneFile(string fileName)
 			scene.numLightSources += 1;
 			string type = properties[i + 2];
 			if (type.compare("directional")==0)
-				lightProps.isLocal = 0;
+				scene.lightVals[scene.numLightSources - 1].isLocal = 0;
 			else if (type.compare("spot")==0)
-				lightProps.isSpot = 1;
-			else
-				lightProps.isLocal = 1;
+				scene.lightVals[scene.numLightSources - 1].isSpot = 1;
+			else {
+				scene.lightVals[scene.numLightSources - 1].isLocal = 1;
+				//scene.lightVals[scene.numLightSources - 1].isSpot = 0;
+			}
 
 			int j = i + 3;
 
@@ -83,7 +95,7 @@ Scene SceneParser::parseSceneFile(string fileName)
 				ambient.y = stof(properties[j + 2]);
 				ambient.z = stof(properties[j + 3]);
 				j += 4;
-				lightProps.ambient = ambient;
+				scene.lightVals[scene.numLightSources - 1].ambient = ambient;
 			}
 			
 			if (properties[j].compare("color")==0) 
@@ -93,7 +105,7 @@ Scene SceneParser::parseSceneFile(string fileName)
 				color.y = stof(properties[j + 2]);
 				color.z = stof(properties[j + 3]);
 				j += 4;
-				lightProps.color = color;
+				scene.lightVals[scene.numLightSources - 1].color = color;
 			}
 
 
@@ -104,25 +116,25 @@ Scene SceneParser::parseSceneFile(string fileName)
 				position.y = stof(properties[j + 2]);
 				position.z = stof(properties[j + 3]);
 				j += 4;
-				lightProps.position = position;
+				scene.lightVals[scene.numLightSources - 1].position = position;
 			}
 
 			if (properties[j].compare("constAtt")==0)
 			{
-				lightProps.constantAttenuation = stof(properties[j + 1]);
+				scene.lightVals[scene.numLightSources - 1].constantAttenuation = stof(properties[j + 1]);
 				j += 2;
 				
 			}
 
 			if (properties[j].compare("linearAtt")==0)
 			{
-				lightProps.linearAttenuation = stof(properties[j + 1]);
+				scene.lightVals[scene.numLightSources - 1].linearAttenuation = stof(properties[j + 1]);
 				j += 2;
 			}
 
 			if (properties[j].compare("quadAtt")==0)
 			{
-				lightProps.quadraticAttenuation = stof(properties[j + 1]);
+				scene.lightVals[scene.numLightSources - 1].quadraticAttenuation = stof(properties[j + 1]);
 				j += 2;
 			}
 			if (properties[j].compare("coneDirection")==0)
@@ -132,7 +144,7 @@ Scene SceneParser::parseSceneFile(string fileName)
 				coneDirection.y = stof(properties[j + 2]);
 				coneDirection.z = stof(properties[j + 3]);
 				j += 4;
-				lightProps.coneDirection = coneDirection;
+				scene.lightVals[scene.numLightSources - 1].coneDirection = coneDirection;
 			}
 			if (properties[j].compare("spotCosCutoff")==0)
 			{
@@ -140,7 +152,7 @@ Scene SceneParser::parseSceneFile(string fileName)
 				spotCosCutoff = stof(properties[j + 1]);
 				
 				j += 2;
-				lightProps.spotCosCutoff = spotCosCutoff;
+				scene.lightVals[scene.numLightSources - 1].spotCosCutoff = spotCosCutoff;
 			}
 			if (properties[j].compare("spotExponent")==0)
 			{
@@ -148,9 +160,9 @@ Scene SceneParser::parseSceneFile(string fileName)
 				spotExponent = stof(properties[j + 1]);
 				
 				j += 2;
-				lightProps.spotExponent = spotExponent;
+				scene.lightVals[scene.numLightSources - 1].spotExponent = spotExponent;
 			}
-			scene.lightVals[scene.numLightSources - 1] = lightProps;
+		//	scene.lightVals[scene.numLightSources - 1] = lightProps;
 		}
 		else if (prop.compare("object")==0)
 		{
