@@ -32,33 +32,19 @@ mat4 viewingMatrix;
 Scene scene;
 vec3 initialEye, initialCenter, initialViewUp;
 bool wireframe = false;
+bool moveF = false, moveR = false, moveL = false, moveB = false;
+bool rotateAroundViewUpClock = false, rotateAroundViewUpCounterClock = false, rotateAroundGazeClock = false, rotateAroundGazeCounterClock = false;
+bool moveUp=false, moveDown=false;
 
 void setLightProperties(objInfo info, mat4 mvMatrix);
+void performAction();
 //----------------------------------------------------------------------------
 //
 // init
 //
 
 void init(void) {
-	//vec3 eye(150, 150, 75), center(0, 0, 0), viewUp(0, 0, 1);
-	//mat4 view = lookAt(eye, center, viewUp);
-	//vec4 point(-19.506435, 30.299948, -37.876911, 1);
-	////vec4 res = result*point;
-	//int rx = 90;
-	//vec3 axis(1, 0, 0);
-	//mat4 rotation = glm::rotate(mat4(1.0), 90.0f*3.14159f / 180, axis);
-
-	//ShaderInfo shaders[] = { {GL_VERTEX_SHADER,"BlinnPhong.vert"},
-	//{GL_FRAGMENT_SHADER,"triangles.frag"},{GL_NONE,NULL} };
-
-	//GLuint program = LoadShaders(shaders);
-	//glUseProgram(program);
-	////GLuint loc1 = glGetUniformLocation(program, "MVMatrix");
-	//GLuint loc2 = glGetUniformLocation(program, "MVMatrix");
-	//loadObjFile("OBJfiles/teapot.obj", &objects, &objCount);
-	//mat4 modelingMatrix = objects->modelMatrix;
-	//float *bounds = objects->bounds;
-	//mat4 proj = frustum(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+	
 	SceneParser parser;
 	scene = parser.parseSceneFile("teapotScene.txt");
 	initialEye = scene.eye;
@@ -121,7 +107,7 @@ void display(void) {
 	glClearBufferfv(GL_COLOR, 0, black);
 	glDepthMask(GL_TRUE);
 	glUseProgram(program);
-	
+	performAction();
 	mat4 projectionMatrix = glm::frustum(-1.0f, 1.f, -1.f, 1.0f, 1.5f, 3200.0f);	
 	for (int i = 0;i < scene.numLightSources;i++)
 	{
@@ -243,17 +229,25 @@ void setLightProperties(objInfo info,mat4 mvMatrix)
 	}
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void performAction()
 {
-	if (key == GLFW_KEY_W || key == GLFW_KEY_UP && action == GLFW_PRESS)
+	if (moveF)
 	{
 		vec3 gazeVector = scene.center - scene.eye;
 		scene.eye = scene.eye + 0.1f * gazeVector;
 		scene.center = scene.center + 0.1f*gazeVector;
 		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
-
+		moveF = false;
 	}
-	if (key == GLFW_KEY_A && action == GLFW_PRESS)
+	else if (moveB)
+	{
+		vec3 gazeVector = scene.center - scene.eye;
+		scene.eye = scene.eye - 0.1f * gazeVector;
+		scene.center = scene.center - 0.1f*gazeVector;
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		moveB = false;
+	}
+	else if (moveL)
 	{
 		vec3 gaze = -(scene.center - scene.eye);
 		vec3 u = glm::cross(scene.viewUp, gaze);
@@ -261,32 +255,99 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		scene.center = scene.center + 0.2f*u;
 		scene.eye = scene.eye + 0.2f*u;
 		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		moveL = false;
 	}
-	if (key == GLFW_KEY_S || key == GLFW_KEY_UP && action == GLFW_PRESS)
-	{
-		vec3 gazeVector = scene.center - scene.eye;
-		scene.eye = scene.eye - 0.1f * gazeVector;
-		scene.center = scene.center - 0.1f*gazeVector;
-		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
-	}
-	if (key == GLFW_KEY_D && action == GLFW_PRESS)
+	else if (moveR)
 	{
 		vec3 gaze = -(scene.center - scene.eye);
 		vec3 u = glm::cross(scene.viewUp, gaze);
 		scene.center = scene.center - 0.2f*u;
-		
+
 		scene.eye = scene.eye - 0.2f*u;
 		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		moveR = false;
 	}
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	else if (rotateAroundGazeClock)
 	{
+		mat4 rm = glm::rotate(mat4(1.0), 1.0f*3.14159f / 180.0f, scene.center - scene.eye);
+		scene.viewUp = vec3(rm*vec4(scene.viewUp, 1.0f));
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundGazeClock = false;
+	}
+	else if (rotateAroundGazeCounterClock)
+	{
+		mat4 rm = glm::rotate(mat4(1.0), -1.0f*3.14159f / 180.0f, scene.center - scene.eye);
+		scene.viewUp = vec3(rm*vec4(scene.viewUp, 1.0f));
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundGazeCounterClock = false;
+	}
+	else if (rotateAroundViewUpClock)
+	{
+		mat4 rm = glm::rotate(mat4(1.0), -1.0f*3.14159f / 180.0f, scene.viewUp);
+		scene.center = vec3(rm*vec4(scene.center, 1.0f));
+		scene.eye = vec3(rm*vec4(scene.eye, 1.0f));
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundViewUpClock = false;
+	}
+	else if (rotateAroundViewUpCounterClock)
+	{
+		mat4 rm = glm::rotate(mat4(1.0), 1.0f*3.14159f / 180.0f, scene.viewUp);
+		scene.center = vec3(rm*vec4(scene.center, 1.0f));
+		scene.eye = vec3(rm*vec4(scene.eye, 1.0f));
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundViewUpCounterClock = false;
+	}
+	else if (moveUp)
+	{
+		scene.center = scene.center - 0.4f*scene.viewUp;
+		scene.eye = scene.eye - 0.4f*scene.viewUp;
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		moveUp = false;
+	}
+	else if (moveDown)
+	{
+		scene.center = scene.center + 0.4f*scene.viewUp;
+		scene.eye = scene.eye + 0.4f*scene.viewUp;
+		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		moveDown = false;
+	}
+
+}
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	bool set = (action != GLFW_RELEASE);
+	if (key == GLFW_KEY_W || key == GLFW_KEY_UP)
+	{
+		//move forward
+		
+		moveF = set;
+	}
+	if (key == GLFW_KEY_A || key == GLFW_KEY_LEFT)
+	{
+		//move left
+		moveL = set;
+	}
+	if (key == GLFW_KEY_S || key == GLFW_KEY_DOWN )
+	{
+		//move backward
+		moveB = set;
+	}
+	if (key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
+	{
+		//move left
+		moveR = set;
+	}
+	if (key == GLFW_KEY_P)
+	{
+		//reset to initial view
 		scene.eye = initialEye;
 		scene.center = initialCenter;
 		scene.viewUp = initialViewUp;
 		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
 	}
-	if (key == GLFW_KEY_O && action == GLFW_PRESS)
+	if (key == GLFW_KEY_O)
 	{
+		//toggle wireframe/solid view
 		if (!wireframe) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			wireframe = true;
@@ -296,39 +357,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			wireframe = false;
 		}
 	}
-	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+	if (key == GLFW_KEY_Q)
 	{
+		//quit
 		exit(1);
 	}
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_ESCAPE)
 	{
+		//quit
 		exit(1);
 	}
-	if (key == GLFW_KEY_X && action == GLFW_PRESS)
+	if (key == GLFW_KEY_X)
 	{
-		mat4 rm = glm::rotate(mat4(1.0), -1.0f*3.14159f / 180.0f, scene.viewUp);
-		scene.center = vec3(rm*vec4(scene.center, 1.0f));
-		scene.eye = vec3(rm*vec4(scene.eye, 1.0f));
-		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		//ro
+		rotateAroundViewUpClock = set;
 	}
-	if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+	if (key == GLFW_KEY_Z)
 	{
-		mat4 rm = glm::rotate(mat4(1.0), 1.0f*3.14159f / 180.0f, scene.viewUp);
-		scene.center = vec3(rm*vec4(scene.center, 1.0f));
-		scene.eye = vec3(rm*vec4(scene.eye, 1.0f));
-		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundViewUpCounterClock = set;
 	}
-	if (key == GLFW_KEY_C && action == GLFW_PRESS)
+	if (key == GLFW_KEY_C)
 	{
-		mat4 rm = glm::rotate(mat4(1.0), 1.0f*3.14159f / 180.0f, scene.center - scene.eye);
-		scene.viewUp = vec3(rm*vec4(scene.viewUp,1.0f));
-		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundGazeClock = set;
 	}
-	if (key == GLFW_KEY_V && action == GLFW_PRESS)
+	if (key == GLFW_KEY_V)
 	{
-		mat4 rm = glm::rotate(mat4(1.0), -1.0f*3.14159f / 180.0f, scene.center - scene.eye);
-		scene.viewUp = vec3(rm*vec4(scene.viewUp, 1.0f));
-		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
+		rotateAroundGazeCounterClock = set;
+	}
+	if (key == GLFW_KEY_R)
+	{
+		moveUp = set;
+	}
+	if (key == GLFW_KEY_T)
+	{
+		moveDown = set;
 	}
 }
 //----------------------------------------------------------------------------
