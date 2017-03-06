@@ -176,6 +176,7 @@
     <ClInclude Include="include\vgl.h" />
     <ClInclude Include="loadObj.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="viewer.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib" />

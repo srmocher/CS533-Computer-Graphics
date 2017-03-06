@@ -78,8 +78,10 @@ Scene SceneParser::parseSceneFile(string fileName)
 			string type = properties[i + 2];
 			if (type.compare("directional")==0)
 				scene.lightVals[scene.numLightSources - 1].isLocal = 0;
-			else if (type.compare("spot")==0)
+			else if (type.compare("spot") == 0) {
 				scene.lightVals[scene.numLightSources - 1].isSpot = 1;
+				scene.lightVals[scene.numLightSources - 1].isLocal = 1;
+			}
 			else {
 				scene.lightVals[scene.numLightSources - 1].isLocal = 1;
 				//scene.lightVals[scene.numLightSources - 1].isSpot = 0;
@@ -175,81 +177,85 @@ Scene SceneParser::parseSceneFile(string fileName)
 			if (j >= properties.size()) {
 				obj.modelingMatrix = modelingMatrix;
 				scene.objects.push_back(obj);
-				break;
+				return scene;
 			}
-			if (properties[j].compare("rx")==0)
-			{
+			while (true) {
+				if (properties[j].compare("rx") == 0)
+				{
 
-				float angle = stof(properties[j + 1]);
-				vec3 axis(1, 0, 0);
-				mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
-				modelingMatrix = modelingMatrix*rotMatrix;
-				obj.rx = angle;
-				j += 2;
-			}
-			if (j >= properties.size()) {
-				obj.modelingMatrix = modelingMatrix;
-				scene.objects.push_back(obj);
-				break;
-			}
-			if (properties[j].compare("ry")==0)
-			{
-				float angle = stof(properties[j + 1]);
-				obj.ry = angle;
-				vec3 axis(0, 1, 0);
-				mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
-				modelingMatrix = modelingMatrix*rotMatrix;
-				j += 2;
-			}
-			if (j >= properties.size()) {
-				obj.modelingMatrix = modelingMatrix;
-				scene.objects.push_back(obj);
-				break;
-			}
-			if (properties[j].compare("rz")==0)
-			{
-				float angle = stof(properties[j + 1]);
-				obj.rz = angle;
-				vec3 axis(0, 0, 1);
-				mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
-				modelingMatrix = modelingMatrix*rotMatrix;
-				j += 2;
-			}
-			if (j >= properties.size()) {
-				obj.modelingMatrix = modelingMatrix;
-				scene.objects.push_back(obj);
-				break;
-			}
-			if (properties[j].compare("t")==0)
-			{
-				vec3 t;
-				t.x = stof(properties[j + 1]);
-				t.y = stof(properties[j + 2]);
-				t.z = stof(properties[j + 3]);
-				j += 4;
-				obj.t = t;
-				mat4 translationMatrix = glm::translate(modelingMatrix, t);
-				modelingMatrix = modelingMatrix*translationMatrix;
-			}
-			if (j >= properties.size()) {
-				obj.modelingMatrix = modelingMatrix;
-				scene.objects.push_back(obj);
-				break;
-			}
-			if (properties[j].compare("s") == 0)
-			{
-				vec3 s;
-				s.x = stof(properties[j + 1]);
-				s.y = stof(properties[j + 2]);
-				s.z = stof(properties[j + 3]);
-				j += 4;
-				mat4 scaleMatrix = glm::scale(modelingMatrix, s);
-				modelingMatrix = modelingMatrix * scaleMatrix;
-			}
-			if (j >= properties.size()) {
-				obj.modelingMatrix = modelingMatrix;
-				scene.objects.push_back(obj);
-				break;
+					float angle = stof(properties[j + 1]);
+					vec3 axis(1, 0, 0);
+					mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
+					modelingMatrix = modelingMatrix*rotMatrix;
+					obj.rx = angle;
+					j += 2;
+				}
+				if (j >= properties.size()) {
+					obj.modelingMatrix = modelingMatrix;
+					scene.objects.push_back(obj);
+					return scene;
+				}
+				if (properties[j].compare("ry") == 0)
+				{
+					float angle = stof(properties[j + 1]);
+					obj.ry = angle;
+					vec3 axis(0, 1, 0);
+					mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
+					modelingMatrix = modelingMatrix*rotMatrix;
+					j += 2;
+				}
+				if (j >= properties.size()) {
+					obj.modelingMatrix = modelingMatrix;
+					scene.objects.push_back(obj);
+					return scene;
+				}
+				if (properties[j].compare("rz") == 0)
+				{
+					float angle = stof(properties[j + 1]);
+					obj.rz = angle;
+					vec3 axis(0, 0, 1);
+					mat4 rotMatrix = glm::rotate(modelingMatrix, angle*3.14159f / 180.0f, axis);
+					modelingMatrix = modelingMatrix*rotMatrix;
+					j += 2;
+				}
+				if (j >= properties.size()) {
+					obj.modelingMatrix = modelingMatrix;
+					scene.objects.push_back(obj);
+					return scene;
+				}
+				if (properties[j].compare("t") == 0)
+				{
+					vec3 t;
+					t.x = stof(properties[j + 1]);
+					t.y = stof(properties[j + 2]);
+					t.z = stof(properties[j + 3]);
+					j += 4;
+					obj.t = t;
+					mat4 translationMatrix = glm::translate(modelingMatrix, t);
+					modelingMatrix = modelingMatrix*translationMatrix;
+				}
+				if (j >= properties.size()) {
+					obj.modelingMatrix = modelingMatrix;
+					scene.objects.push_back(obj);
+					return scene;
+				}
+				if (properties[j].compare("s") == 0)
+				{
+					vec3 s;
+					s.x = stof(properties[j + 1]);
+					s.y = stof(properties[j + 2]);
+					s.z = stof(properties[j + 3]);
+					j += 4;
+					mat4 scaleMatrix = glm::scale(modelingMatrix, s);
+					modelingMatrix = modelingMatrix * scaleMatrix;
+				}
+				if (j >= properties.size()) {
+					obj.modelingMatrix = modelingMatrix;
+					scene.objects.push_back(obj);
+					return scene;
+				}
+				if (properties[j].compare("object") == 0)
+					break;
 			}
 			obj.modelingMatrix = modelingMatrix;
 			scene.objects.push_back(obj);

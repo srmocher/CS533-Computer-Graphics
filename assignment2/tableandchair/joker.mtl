@@ -1,0 +1,58 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 05.02.2013 19:27:08
+
+newmtl Joker_Body_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\models\Death_Joker_Well\Texture2D\Joker_Body_D.tga
+	map_Kd C:\models\Death_Joker_Well\Texture2D\Joker_Body_D.tga
+
+newmtl Joker_Head_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\models\Death_Joker_Well\Texture2D\Joker_Head_D.tga
+	map_Kd C:\models\Death_Joker_Well\Texture2D\Joker_Head_D.tga
+
+newmtl Joker_Hair_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\models\Death_Joker_Well\Texture2D\Joker_Hair_D.tga
+	map_Kd C:\models\Death_Joker_Well\Texture2D\Joker_Hair_D.tga
+
+newmtl Joker_Eye_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\mohammad\Downloads\nightwing\NightWing\eyeballs_diff.tga
+	map_Kd C:\Users\mohammad\Downloads\nightwing\NightWing\eyeballs_diff.tga

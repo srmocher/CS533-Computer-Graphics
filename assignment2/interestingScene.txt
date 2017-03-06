@@ -1,0 +1,31 @@
+view
+eye 8. 15. -25.
+center 0. 0. 0.
+viewup 0. 0. 1.
+
+light
+type directional ambient .1 .1 .1 
+color 1. 1. 1.  position 4. 4. 4.
+
+light
+type local
+ambient .1 0 0 color 1. 0 0 position 25. 25. 40.
+constAtt 0.01 linearAtt 0.01 quadAtt .002
+
+
+object tableandchair/bat.obj
+shader BLINN_PHONG
+rx 0 ry 60 rz 60
+
+object tableandchair/tumbler.obj
+shader BLINN_PHONG
+s 3 3 3
+
+
+
+
+
+
+
+
+

@@ -9,7 +9,7 @@
 
 #include <GL3/gl3w.h>
 #include "LoadShaders.h"
-
+#define _DEBUG
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus

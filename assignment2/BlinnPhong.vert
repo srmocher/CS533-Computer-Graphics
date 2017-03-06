@@ -1,7 +1,7 @@
 // Vertex shader for multiple lights stays the same with all lighting
 // done in the fragment shader.
 
-#version 430 core
+#version 410 core
 
 uniform mat4 MVPMatrix;	// full model-view-projection matrix
 uniform mat4 MVMatrix;	// model and view matrix

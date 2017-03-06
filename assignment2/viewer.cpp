@@ -7,6 +7,7 @@
 #include "loadObj.h"
 #include "scene.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #ifdef __APPLE__
@@ -19,10 +20,11 @@ objInfo *objInfos;
 int objCount;
 vector<objInfo> objectInfos;
 vector<Object> sceneObjects;
-mat4 viewingMatrix;
+mat4 viewingMatrix,projectionMatrix;
 Scene scene;
 vec3 initialEye, initialCenter, initialViewUp;
 bool wireframe = false;
+float aspectRatio=1.0f;
 bool moveF = false, moveR = false, moveL = false, moveB = false;
 bool rotateAroundViewUpClock = false, rotateAroundViewUpCounterClock = false, rotateAroundGazeClock = false, rotateAroundGazeCounterClock = false;
 bool moveUp = false, moveDown = false;
@@ -36,8 +38,8 @@ void printMatrix(mat3);
 // init
 //
 
-void init(void) {
-
+void init(const char *fileName) {
+	//glViewport(0, 0, 800, 800);
 	SceneParser parser;
 	scene = parser.parseSceneFile("teapotScene.txt");
 	initialEye = scene.eye;
@@ -60,7 +62,7 @@ void init(void) {
 	lightProperties props[4];
 	int numLightSources = scene.numLightSources;
 
-
+	
 	for (auto i = 0;i < sceneObjects.size();i++)
 	{
 		int num;
@@ -108,12 +110,17 @@ void printMatrix(mat3 matrix)
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
-	float black[] = { 0.227, 0.474, 0.501,0.0 };
-	glClearBufferfv(GL_COLOR, 0, black);
+	float background[] = { 0.227, 0.474, 0.501,0.0 };
+	glClearBufferfv(GL_COLOR, 0, background);
 	glDepthMask(GL_TRUE);
 	glUseProgram(program);
 	performAction();
-	mat4 projectionMatrix = glm::frustum(-1.0f, 1.f, -1.f, 1.0f, 1.5f, 3200.0f);
+	projectionMatrix = glm::perspective(45.0f, aspectRatio, 1.0f, 3200.0f);
+	if (wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//projectionMatrix = glm::frustum(-1.0f, 1.f, -1.f, 1.0f, 1.5f, 3200.0f);
 	//printMatrix(projectionMatrix);
 	/*for (int i = 0;i < scene.numLightSources;i++)
 	{
@@ -367,17 +374,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		scene.viewUp = initialViewUp;
 		viewingMatrix = glm::lookAt(scene.eye, scene.center, scene.viewUp);
 	}
-	if (key == GLFW_KEY_O)
+	if (key == GLFW_KEY_O && action == GLFW_RELEASE)
 	{
 		//toggle wireframe/solid view
-		if (!wireframe) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			wireframe = true;
-		}
-		else {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			wireframe = false;
-		}
+		wireframe = !wireframe;
 	}
 	if (key == GLFW_KEY_Q)
 	{
@@ -415,6 +415,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		moveDown = set;
 	}
 }
+
+void resize(GLFWwindow* window, int width, int height)
+{
+	float aRatio = width*1.0f / height;
+	if (aRatio >= 1)
+		aspectRatio = aRatio;
+
+	glViewport(0, 0, width, height);
+}
+
+bool is_file_exist(const char *fileName)
+{
+	std::ifstream infile(fileName);
+	return infile.good();
+}
 //----------------------------------------------------------------------------
 //
 // main
@@ -428,6 +443,18 @@ int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance,
 int main(int argc, char **argv)
 #endif
 {
+	if (argc != 2)
+	{
+		cout << "Provide one argument as the name of a valid scene file" << endl;
+		exit(1);
+	}
+	
+	char *fileName = argv[1];
+	if (!is_file_exist(fileName))
+	{
+		cout << "File doesn't exists. Restart the program with the correct filename/path" << endl;
+		exit(1);
+	}
 	glfwInit();
 
 #ifdef __APPLE__
@@ -437,7 +464,7 @@ int main(int argc, char **argv)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
-	GLFWwindow *window = glfwCreateWindow(800, 800, "Triangles", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(900, 800, "Assignment 2", NULL, NULL);
 
 	glfwMakeContextCurrent(window);
 
@@ -453,20 +480,21 @@ int main(int argc, char **argv)
 	GLint major, minor;
 	glGetIntegerv(GL_MAJOR_VERSION, &major);
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
-
-	cout << "GL Vendor            :" << vendor << endl;
+	
+	/*cout << "GL Vendor            :" << vendor << endl;
 	cout << "GL Renderer          :" << renderer << endl;
 	cout << "GL Version (string)  :" << version << endl;
 	cout << "GL Version (integer) :" << major << " " << minor << endl;
 	cout << "GLSL Version         :" << glslVersion << endl;
-	cout << "major version: " << major << "  minor version: " << minor << endl;
+	cout << "major version: " << major << "  minor version: " << minor << endl;*/
 #endif
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetWindowSizeCallback(window, resize);
 	/* if (argc != 1)
 	 {
 		 cout << "Enter fileName as parameter" << endl;
 	 }*/
-	init();
+	init(fileName);
 
 	while (!glfwWindowShouldClose(window)) {
 		display();

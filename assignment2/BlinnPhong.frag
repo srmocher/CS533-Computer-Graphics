@@ -1,6 +1,6 @@
 // Fragment shader for multiple lights.
 
-#version 430 core
+#version 410 core
 
 struct LightProperties {
     int isEnabled;
@@ -106,5 +106,5 @@ void main()
     }
 
 	vec3 rgb = min(scatteredLight + reflectedLight, vec3(1.0));
-    FragColor = vec4(rgb, 0.0f);
+    FragColor = vec4(rgb,0.0f);
 }
