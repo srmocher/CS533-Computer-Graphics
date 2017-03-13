@@ -7,6 +7,8 @@ float REST_DENSITY = 1000;
 float H = 0.03;
 float PI = 3.14;
 float SIGMA = 0.001;
+glm::vec3 g(0.0,9.8,0.0);
+float DELTA = 0.001;
 
 void SPH::init(int numParticles)
 {
@@ -113,5 +115,19 @@ void SPH::calc_force_surface_tension()
 		p.color_field = color_field;
 		p.color_gradient = color_gradient;
 		p.surface_force = SIGMA*color_laplacian*color_gradient / glm::length(color_gradient);
+	}
+}
+
+void SPH::calc_position_velocity()
+{
+	for (int i = 0;i < particles.size();i++)
+	{
+		particles[i].acceleration = (particles[i].viscosity_force + particles[i].surface_force + particles[i].density*g + particles[i].pressure_gradient)/particles[i].density;
+	}
+
+	for (int i = 0;i < particles.size();i++)
+	{
+		particles[i].position = particles[i].position + particles[i].velocity*DELTA + 0.5f*particles[i].acceleration*pow(DELTA, 2);
+		particles[i].velocity = particles[i].velocity + particles[i].acceleration*DELTA;
 	}
 }
