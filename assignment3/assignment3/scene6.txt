@@ -1,0 +1,13 @@
+view
+eye 2. 0. 2.
+center 0. 0. 0.
+viewup 0. 0. 1.
+
+light
+type directional
+ambient .1 .1 .1
+color 1. 1. 1.
+position 0. 0. 1.
+
+object OBJfiles/sphere2.obj
+shader Blinn_Phong

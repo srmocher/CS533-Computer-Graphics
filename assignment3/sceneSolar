@@ -1,0 +1,21 @@
+view
+eye 2. 0. 2.
+center 0. 0. 0.
+viewup 0. 0. 1.
+
+light
+type directional
+ambient .1 .1 .1
+color 1. 1. 1.
+position 0. 0. 1.
+
+object OBJFiles/solarSystem/earth.obj
+shader BLINN_PHONG
+
+object OBJFiles/solarSystem/jupiter.obj
+shader BLINN_PHONG
+t 2 0 0
+
+object OBJFiles/solarSystem/moon.obj
+shader BLINN_PHONG
+t 4 0 0

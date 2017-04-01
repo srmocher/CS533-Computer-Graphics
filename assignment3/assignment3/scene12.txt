@@ -1,0 +1,18 @@
+view  eye 4. 4. 2.5 center 0. 0. 0.  viewup 0. 0. 1.
+
+light 
+type spot 
+ambient .1 .1 .1 color 1. 1. 1. position 0. 0. 7. 
+constAtt 0.2 linearAtt 0.2 quadAtt .002 
+coneDirection 0. 0. -1. spotCosCutoff .939 spotExponent 45.
+
+light 
+type spot 
+ambient .1 .1 .1 color 1. 1. 1. position 2. 2. 7. 
+constAtt 0.2 linearAtt 0.2 quadAtt .002 
+coneDirection 0. 0. -1. spotCosCutoff .939 spotExponent 45.
+
+object OBJfiles/f16.obj
+shader BLINN_PHONG
+rx 90.
+t 0. 0. 0.25

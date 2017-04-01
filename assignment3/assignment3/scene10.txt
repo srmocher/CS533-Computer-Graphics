@@ -1,0 +1,33 @@
+view
+eye 2. 0. 2.
+center 0. 0. 0.
+viewup 0. 0. 1.
+
+light
+type directional
+ambient .1 .1 .1
+color 1. 1. 1.
+position 0. 1. 0.
+
+light
+type directional
+ambient .1 .1 .1
+color 1. 1. 1.
+position 0. -1. 0.
+
+light
+type local
+ambient .1 .1 .1
+color 1. 0. 0.
+position 0. 0. 12.
+constAtt 0.02 linearAtt 0.02 quadAtt 0.02
+
+light
+type spot
+ambient .0 .1 .0 color 0. 1. 0. position 5. 0. -5.
+constAtt 0.2 linearAtt 0.2 quadAtt .002 coneDirection -1. 0. 1.
+spotCosCutoff .93 spotExponent 25.
+
+
+object OBJfiles/sphere3.obj
+shader Blinn_Phong

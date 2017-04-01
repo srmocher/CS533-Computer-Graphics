@@ -1,0 +1,23 @@
+view
+eye 3. 3. 2.
+center 0. 0. 0.
+viewup 0. 1. 0.
+
+light
+type directional ambient .1 .1 .1 
+color 1. 1. 1.  position 3. 3. 2.
+
+light
+type directional 
+ambient .1 .1 .1 color 1. 1. 1. position 0. 0. 1.
+
+light 
+type directional
+ambient .1 .1 .1 color 1. 1. 1. position 1. 0. 0.
+
+light 
+type directional
+ambient .1 .1 .1 color 1. 1. 1. position 0. 1. 0.
+
+object OBJfiles/axis.obj
+shader BLINN_PHONG

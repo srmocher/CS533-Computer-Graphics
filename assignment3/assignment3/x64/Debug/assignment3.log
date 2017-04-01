@@ -1,0 +1,4 @@
+﻿viewer.obj : error LNK2019: unresolved external symbol SOIL_load_image referenced in function "void __cdecl readImageAndCreateTexture(char *)" (?readImageAndCreateTexture@@YAXPEAD@Z)
+viewer.obj : error LNK2019: unresolved external symbol SOIL_free_image_data referenced in function "void __cdecl readImageAndCreateTexture(char *)" (?readImageAndCreateTexture@@YAXPEAD@Z)
+D:\CS533\A1\CS533-Computer-Graphics\assignment3\assignment3\include\SOIL.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+D:\CS533\A1\CS533-Computer-Graphics\assignment3\x64\Debug\assignment3.exe : fatal error LNK1120: 2 unresolved externals

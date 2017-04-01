@@ -1,0 +1,51 @@
+view
+eye 10. 10. 7.
+center 3. 3. 1.
+viewup 0. 0. 1.
+
+light
+type spot
+ambient .1 .1 .1 color 1. 1. 1. position 2. 2. 4.
+constAtt 0.2 linearAtt 0.2 quadAtt .002 coneDirection 0. 0. -1.
+spotCosCutoff .93 spotExponent 25.
+
+light
+type spot
+ambient .1 .1 .1 color 1. 1. 1. position 0. 0. 4.
+constAtt 0.2 linearAtt 0.2 quadAtt .002 coneDirection 0. 0. -1.
+spotCosCutoff .93 spotExponent 25.
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 2 0 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 4 0 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 0 2 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 2 2 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 4 2 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 0 4 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 2 4 0
+
+object OBJfiles/sphere2.obj
+shader BLINN_PHONG
+t 4 4 0

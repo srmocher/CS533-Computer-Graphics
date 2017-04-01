@@ -1,0 +1,11 @@
+view
+eye -150. 250. 150.
+center 0. 0. 0.
+viewup 0. 1. 0.
+
+light
+type directional ambient .1 .1 .1 
+color 1. 1. 1.  position 0. 1. 0.
+
+object OBJfiles/teapot.obj
+shader BLINN_PHONG

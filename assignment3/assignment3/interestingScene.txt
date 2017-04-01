@@ -1,0 +1,38 @@
+view
+eye 4.91 -26.4	17.
+center 2.02 -10.8 7
+viewup 0. 0. 1.
+
+light
+type directional ambient .1 .1 .1
+color 1. 1. 1.  position 4. 4. 4.
+
+light
+type local
+ambient .1 0 0 color 0.28 0.23 0.54 position 5. 2. 10.
+constAtt 0.01 linearAtt 0.01 quadAtt .002
+
+light
+type local
+ambient .1 0 0 color 1 0. 0. position -5. 2. 10.
+constAtt 0.01 linearAtt 0.01 quadAtt .002
+
+
+object OBJfiles/interestingScene/chair.obj
+shader BLINN_PHONG
+rx 90
+
+object OBJfiles/interestingScene/dog.obj
+shader BLINN_PHONG
+t 4 0 0
+rx 90
+
+object OBJfiles/interestingScene/bat.obj
+shader BLINN_PHONG
+t -2 -4 0
+rx 90
+
+object OBJfiles/interestingScene/batbird.obj
+shader BLINN_PHONG
+s 3 3 3
+rx 75

@@ -1,0 +1,42 @@
+﻿  viewer.cpp
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(82): warning C4018: '<': signed/unsigned mismatch
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(109): warning C4018: '<': signed/unsigned mismatch
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(158): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(158): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(181): warning C4018: '<': signed/unsigned mismatch
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(252): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(256): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(260): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(264): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(268): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(273): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(289): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(293): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(299): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(303): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(307): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(311): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(315): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(579): warning C4018: '<': signed/unsigned mismatch
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(585): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(589): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(636): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
+d:\cs533\a1\cs533-computer-graphics\assignment3\assignment3\viewer.cpp(637): warning C4172: returning address of local variable or temporary: pathToFile
+  assignment3.vcxproj -> D:\CS533\A1\CS533-Computer-Graphics\assignment3\Debug\assignment3.exe
+  assignment3.vcxproj -> D:\CS533\A1\CS533-Computer-Graphics\assignment3\Debug\assignment3.pdb (Full PDB)
